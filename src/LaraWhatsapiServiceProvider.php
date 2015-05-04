@@ -42,11 +42,11 @@ class LaraWhatsapiServiceProvider extends ServiceProvider {
         $this->app->bindShared('Tmv\WhatsApi\Entity\Identity', function ()
         {
             //Setup Account details.
-            $account   = Config::get("larawhatsapi::useAccount");
-            $nickName  = Config::get("larawhatsapi::accounts.$account.nickName");
-            $number    = Config::get("larawhatsapi::accounts.$account.number");
-            $password  = Config::get("larawhatsapi::accounts.$account.password");
-            $userIdent = Config::get("larawhatsapi::accounts.$account.identity");
+            $account   = config("larawhatsapi.useAccount");
+            $nickName  = config("larawhatsapi.accounts.$account.nickName");
+            $number    = config("larawhatsapi.accounts.$account.number");
+            $password  = config("larawhatsapi.accounts.$account.password");
+            $userIdent = config("larawhatsapi.accounts.$account.identity");
 
             // Initializing client
             // Creating a service to retrieve phone info
@@ -70,10 +70,10 @@ class LaraWhatsapiServiceProvider extends ServiceProvider {
         //Set up how the create TMV's Client Object when one is asked to be created (which needs the Identity)
         $this->app->bindShared('Tmv\WhatsApi\Client', function ()
         {
-            $debug             = Config::get("larawhatsapi::debug");
-            $account           = Config::get("larawhatsapi::useAccount");
-            $number            = Config::get("larawhatsapi::accounts.$account.number");
-            $nextChallengeFile = Config::get("larawhatsapi::nextChallengeDir") . "/" . $number . "-NextChallenge.dat";
+            $debug             = config("larawhatsapi.debug");
+            $account           = config("larawhatsapi.useAccount");
+            $number            = config("larawhatsapi.accounts.$account.number");
+            $nextChallengeFile = config("larawhatsapi.nextChallengeDir") . "/" . $number . "-NextChallenge.dat";
 
             $identity = App::make('Tmv\WhatsApi\Entity\Identity');
             // Initializing client
@@ -138,7 +138,7 @@ class LaraWhatsapiServiceProvider extends ServiceProvider {
         //Which concret implementation will we use when an SMSInterface is asked for? User can pick in the config file.
         $this->app->bindShared('Williamson\Larawhatsapi\Repository\SMSMessageInterface', function ()
         {
-            $fork = strtoupper(Config::get('larawhatsapi::fork'));
+            $fork = strtoupper(config('larawhatsapi.fork'));
             switch ($fork)
             {
                 case ($fork == 'MGP25'):
@@ -155,12 +155,12 @@ class LaraWhatsapiServiceProvider extends ServiceProvider {
         $this->app->bindShared('WhatsProt', function ()
         {
             //Setup Account details.
-            $debug     = Config::get("larawhatsapi::debug");
-            $account   = Config::get("larawhatsapi::useAccount");
-            $nickName  = Config::get("larawhatsapi::accounts.$account.nickName");
-            $number    = Config::get("larawhatsapi::accounts.$account.number");
-            $userIdent = Config::get("larawhatsapi::accounts.$account.identity");
-            $nextChallengeFile = Config::get("larawhatsapi::nextChallengeDir") . "/" . $number . "-NextChallenge.dat";
+            $debug     = config("larawhatsapi.debug");
+            $account   = config("larawhatsapi.useAccount");
+            $nickName  = config("larawhatsapi.accounts.$account.nickName");
+            $number    = config("larawhatsapi.accounts.$account.number");
+            $userIdent = config("larawhatsapi.accounts.$account.identity");
+            $nextChallengeFile = config("larawhatsapi.nextChallengeDir") . "/" . $number . "-NextChallenge.dat";
 
             $whatsProt =  new WhatsProt($number, $userIdent, $nickName, $debug);
             $whatsProt->setChallengeName($nextChallengeFile);

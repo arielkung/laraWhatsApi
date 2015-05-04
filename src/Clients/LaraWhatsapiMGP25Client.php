@@ -1,6 +1,5 @@
 <?php namespace Williamson\Larawhatsapi\Clients;
 
-use Config;
 use WhatsProt;
 use Williamson\Larawhatsapi\Repository\SMSMessageInterface;
 
@@ -22,8 +21,8 @@ class LaraWhatsapiMGP25Client implements SMSMessageInterface{
     public function __construct(WhatsProt $whatsProt)
     {
         $this->whatsProt = $whatsProt;
-        $account   = Config::get("larawhatsapi::useAccount");
-        $this->password = Config::get("larawhatsapi::accounts.$account.password");
+        $account   = config("larawhatsapi.useAccount");
+        $this->password = config("larawhatsapi.accounts.$account.password");
     }
 
     public function sendMessage($to, $message)
