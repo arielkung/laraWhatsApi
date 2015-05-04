@@ -26,14 +26,9 @@ class LaraWhatsapiServiceProvider extends ServiceProvider {
 
     public function boot()
     {
-        $this->package('williamson/larawhatsapi', null, __DIR__);
-
-        $loader  = AliasLoader::getInstance();
-        $aliases = Config::get('app.aliases');
-        if (empty($aliases['WA']))
-        {
-            $loader->alias('WA', 'Williamson\Larawhatsapi\Facades\LaraWhatsapiFacade');
-        }
+         $this->publishes([
+            __DIR__.'/config/config.php' => config_path('larawhatsapi.php')
+        ], 'config');
     }
 
     /**
