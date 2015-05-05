@@ -35,7 +35,20 @@ class LaraWhatsapiMGP25Client implements SMSMessageInterface{
 
     public function checkForNewMessages()
     {
-        // TODO: Implement checkForNewMessages() method.
+        $this->connectAndLogin();
+        $time = time();
+        while (true) {
+            $this->whatsProt->pollMessage();
+
+            if (time() - $time >= 10) {
+                $time = time();
+                $this->whatsProt->sendActiveStatus();
+            }
+
+            usleep(1000);
+        }
+
+        $this->logoutAndDisconnect();
     }
 
     protected function connectAndLogin()
